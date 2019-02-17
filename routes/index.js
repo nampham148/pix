@@ -1,6 +1,7 @@
 var express = require('express');
 var passport = require('passport');
 var Account = require('../models/account');
+var Fight = require('../models/fight');
 var router = express.Router();
 const axios = require('axios');
 const {Storage} = require('@google-cloud/storage');
@@ -10,18 +11,19 @@ var helpers = require("utils");
 var isAuthenticated = function (req, res, next) {
   if (req.isAuthenticated())
     return next();
-  res.redirect('/');
+  res.redirect('/login');
 }
 
-router.get('/', function(req, res, next) {
-  res.render('index', { layout: 'default', title: 'Login' });
+// AUTHENTICATION
+router.get('/', isAuthenticated, function(req, res, next) {
+  res.render('index', { layout: 'default', user: req.user });
 });
 
-router.get('/login', isAuthenticated, function(req, res, next) {
-  res.render('login', { layout: 'default', user: req.user.username});
+router.get('/login', function(req, res, next) {
+  res.render('login', { layout: 'default', title: 'Login'});
 });
 
-router.post('/login', passport.authenticate('local', {successRedirect: '/login', failureRedirect: '/', failureFlash: 'Invalid username or password'}));
+router.post('/login', passport.authenticate('local', {successRedirect: '/', failureRedirect: '/login', failureFlash: 'Invalid username or password'}));
 
 router.get('/register', function(req, res, next) {
   res.render('register', { layout: 'default', title: 'Register' });
@@ -44,13 +46,85 @@ router.post('/register', function(req, res, next) {
     });
 });
 
-
-
 router.get('/logout', function(req, res) {
     req.logout();
     res.redirect('/');
 });
 
+// FIGHT!
+router.post('/fight', isAuthenticated, function(req, res, next) {
+  let user = req.user;
+
+  if (user.stamina < 15) {
+    res.render('index', {layout: 'default', error: "You don't have enough stamina! Start exercising!", user: req.user});
+  } else {
+    var pigs = ["Scout", "Archer", "Knight", "Warmonger"];
+    var pig_power = [80, 105, 125, 160];
+    var probs = [0.3, 0.3, 0.3, 0.1];
+    var gold_drops = [0, 2, 4, 6];
+
+    // 30% chance to meet the big boss
+    var random = Math.random();
+    var i = -1;
+    while (random >= 0) {
+      i++;
+      random -= probs[i];
+    }
+
+    let monster_power = pig_power[i];
+    let opponent_name = pigs[i] ;
+    let fight_big_boss = (i == 3);
+    let min_drop = gold_drops[i];
+
+    var result_win;
+    var gold_drop = 0;
+
+    var base_power = user.inherent_power + user.bonus_power;
+    console.log(base_power);
+
+    if (fight_big_boss && !user.empowered) {
+      // bound to lose if not empowered
+      result_win = false;
+    } else {
+      // compare power
+      var user_power = base_power * Math.random() + base_power * 0.5;
+      if (user_power > monster_power) {
+        result_win = true;
+      } else {
+        result_win = false;
+      }
+    }
+
+    if (result_win) {
+      // random a gold drop
+      gold_drop = Math.floor(Math.random() * 4) + min_drop;
+    }
+
+    var fight = new Fight({
+      user: user._id,
+      opponent: opponent_name,
+      result: result_win,
+      gold_drop: gold_drop
+    });
+
+    fight.save(err => {
+      console.log(err);
+    });
+
+    user.gold += gold_drop;
+    user.stamina -= 15;
+    user.save()
+
+    console.log(opponent_name);
+    console.log(user_power);
+    console.log(result_win);
+    console.log(gold_drop);
+
+    res.redirect("/");
+  }
+});
+
+// READ IMAGE
 router.get('/gpa-image', function(req, res, next) {
   res.render('gpa_image', {layout: 'default'});
 });
