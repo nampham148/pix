@@ -9,7 +9,7 @@ const vision = require('@google-cloud/vision');
 var schedule = require('node-schedule');
 
 // REGEN MANA
-var j = schedule.scheduleJob('0,30 * * * * *', function() {
+/*var j = schedule.scheduleJob('0,30 * * * * *', function() {
   console.log("running cron job");
   Account.find({} , (err, users) => {
     if (err) {
@@ -49,7 +49,7 @@ var power_j = schedule.scheduleJob('0 1 1 5,12 *', function() {
       user.save();
     });
   });
-});
+});*/
 
 var isAuthenticated = function (req, res, next) {
   if (req.isAuthenticated())
