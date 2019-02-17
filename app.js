@@ -60,7 +60,10 @@ app.engine('hbs', hbs( {
   extname: 'hbs',
   defaultView: 'default',
   layoutsDir: __dirname + '/views/layouts/',
-  partialsDir: __dirname + '/views/partials/'
+  partialsDir: __dirname + '/views/partials/',
+  helpers: {
+    add: function(x, y) {return x+y;}
+  }
 }));
 
 // error handler
