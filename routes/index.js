@@ -98,7 +98,7 @@ router.get('/', isAuthenticated, function(req, res, next) {
 });
 
 router.get('/login', function(req, res, next) {
-  res.render('login', { layout: 'default', title: 'Login'});
+  res.render('login', { layout: 'default', title: 'Pix v1.0'});
 });
 
 router.post('/login', passport.authenticate('local', {successRedirect: '/', failureRedirect: '/login', failureFlash: 'Invalid username or password'}));
@@ -109,6 +109,9 @@ router.get('/register', function(req, res, next) {
 
 router.post('/register', function(req, res, next) {
     Account.register(new Account({ username : req.body.username }), req.body.password, function(err, account) {
+		if (req.body.password != req.body.confpassword) {
+		  return res.render('register', { layout: 'default', error: 'Password and confirm password does not match!'});
+		}
         if (err) {
           return res.render('register', { layout: 'default', error : err.message });
         }
