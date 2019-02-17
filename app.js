@@ -61,7 +61,31 @@ app.engine('hbs', hbs( {
   layoutsDir: __dirname + '/views/layouts/',
   partialsDir: __dirname + '/views/partials/',
   helpers: {
-    add: function(x, y) {return x+y;}
+    add: function(x, y) {return x+y;},
+    equal: function(x, y) {return x == y},
+    render_text: function(pig, if_win) {
+      var win = {
+        "Scout": "You defeated the pig scout with your fierce look! Piece of cake!",
+        "Archer": "Where did that arrow go? You were too fast the pig archer couldn’t even aim at you!",
+        "Knight": "What was on your menu last night? A pig warrior!",
+        "Warmonger": "You took down the pig warmonger! No more pigs for a while!"
+      }
+
+      var lose = {
+        "Scout": "You tripped over a rock while charging toward the pig scout! What a shame!",
+        "Archer": "You fearlessly charged at the pig archer, but took an arrow to the knee!",
+        "Knight": "Did you leave your sword at home again? The pig warrior certainly had some good laugh at you!",
+        "Warmonger": "You encountered the pig warmonger and ran for your life!"
+      }
+
+      console.log(win);
+
+      if (if_win) {
+        return win[pig];
+      } else {
+        return lose[pig];
+      }
+    }
   }
 }));
 

@@ -8,40 +8,46 @@
 							<img class="mb-4" src="assets//images/pig.jpg" alt="" width="200" height="200"/>
 							<div id="fighting-info" class="row">
 								<div class="col" id="power-bar">
-									<p align="left" class="chi-so"> Power: 110 </p>
-									<p align="left" class="chi-so"> Mana: 135/150 </p>
+									<p align="left" class="chi-so"> Power: {{add user.inherent_power user.bonus_power}} </p>
+									<p align="left" class="chi-so"> Mana: {{user.stamina}}/150 </p>
 								</div>
 								<div class="col">
-									<img src="assets/images/50431429_769303080099977_7613375624366784512_n.png" alt="" width="75" height="75"/>
+									{{#if user.empowered}}
+										<img src="assets/images/50431429_769303080099977_7613375624366784512_n.png" alt="" width="75" height="75"/>
+									{{else}}
+										<img src="assets/images/52378378_325605244969602_8945436731671314432_n.jpg" alt="" width="75" height="75"/>
+									{{/if}}
 								</div>							
 						</div>
 					</div>
 					<div class="row">
 						<div class="col-sm">
 							<div class="row">
-								<div class="btn btn-warning btn-block info-block"><p style="margin-top: 20px"> GOLD: 13 </p></div>
+								<div class="btn btn-warning btn-block info-block"><p style="margin-top: 20px"> GOLD: {{user.gold}} </p></div>
 							</div>
 						</div>
 						<div class="col-sm">
 							<div class="row">
-								<button type="button" class="btn btn-block info-block" style="color: black; background-color: #ff6877">FIGHT</button>
+								<form action="/fight" method="post" style="width: 100%">
+									<button type="submit" class="btn btn-block info-block" style="width: 91%; color: black; background-color: #ff6877">FIGHT</button>
+								</form>
 							</div>
 						</div>
 					</div>
 					<div class="row">
 						<div class="col-sm">
 							<div class="row">
-								<button type="button" class="btn btn-block info-block shit-color">SCHOOL</button>
+								<a href="/gpa-image" style="width: 91%"> <button type="button" class="btn btn-block info-block shit-color">SCHOOL</button> </a>
 							</div>
 						</div>
 						<div class="col-sm">
 							<div class="row">
-								<button type="button" class="btn btn-block info-block shit-color">GYM</button>
+								<a href="/gpa-image" style="width: 91%"> <button type="button" class="btn btn-block info-block shit-color">GYM</button> </a>
 							</div>
 						</div>
 					</div>
 					<div class="row">
-						<button type="button" class="btn btn-block info-block shit-color">SHOP</button>
+						<a href="/shop" style="width: 95%">  <button type="button" class="btn btn-block info-block shit-color">SHOP</button> </a>
 					</div>
 				</div>
 		  </div>
@@ -57,12 +63,33 @@
 					</div>	
 					
 					<ul class="list-group list-group-flush">
-						<li class="list-group-item">Cras justo odio</li>
-						<li class="list-group-item">Dapibus ac facilisis in</li>
-						<li class="list-group-item">Vestibulum at eros</li>
-						<li class="list-group-item">Vestibulum at eros</li>
-						<li class="list-group-item">Vestibulum at eros</li>
-						<li class="list-group-item">Vestibulum at eros</li>
+						{{#each fights}}
+							<li class="list-group-item"> 
+								<div class="journal-entry row">
+									<div class="col-2">
+										{{#if (equal this.opponent "Archer")}}
+											<img src="assets/images/archer.jpg" alt="" width="75" height="75" />
+										{{else if (equal this.opponent "Scout")}}
+											<img src="assets/images/scout.png" alt="" width="75" height="75" />
+										{{else if (equal this.opponent "Knight")}}
+											<img src="assets/images/warrior.jpg" alt="" width="75" height="75" />
+										{{else}}
+											<img src="assets/images/warmonger.png" alt="" width="75" height="75" />
+										{{/if}}
+									</div>
+									<div class="col">
+										<p style="text-align: left"> {{render_text this.opponent this.result}} <p>
+										{{#if this.result}}
+											{{#if this.gold_drop}}
+												<p style="text-align: left; color: red"> You claim the bounty from your victory, gaining {{this.gold_drop}} gold! </p>
+											{{else}}
+												<p style="text-align: left; color: red"> You defeated your enemy, but sadly this guy is worthless! </p>
+											{{/if}}
+										{{/if}}
+									</div>									
+								</div>
+							</li>
+						{{/each}}
 					</ul>
 			  </div>
 	    </div>

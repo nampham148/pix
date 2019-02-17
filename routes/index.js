@@ -94,7 +94,17 @@ router.post('/shop', isAuthenticated, function(req, res, next) {
 
 // AUTHENTICATION
 router.get('/', isAuthenticated, function(req, res, next) {
-  res.render('index', { layout: 'default', user: req.user });
+  var user = req.user;
+  Fight.find({user: user._id}).sort({_id: -1}).limit(6).exec((err, fights) => {
+    if (err) {
+      console.log(err);
+      res.redirect('/logout');
+    } else {
+      console.log(fights);
+      res.render('index', { layout: 'default', user: req.user, fights: fights });
+    }
+  });
+  
 });
 
 router.get('/login', function(req, res, next) {
@@ -108,10 +118,12 @@ router.get('/register', function(req, res, next) {
 });
 
 router.post('/register', function(req, res, next) {
+    if (req.body.password != req.body.confpassword) {
+      return res.render('register', { layout: 'default', error: 'Password and confirm password does not match!'});
+    }
+
     Account.register(new Account({ username : req.body.username }), req.body.password, function(err, account) {
-		if (req.body.password != req.body.confpassword) {
-		  return res.render('register', { layout: 'default', error: 'Password and confirm password does not match!'});
-		}
+		
         if (err) {
           return res.render('register', { layout: 'default', error : err.message });
         }
@@ -137,7 +149,15 @@ router.post('/fight', isAuthenticated, function(req, res, next) {
   let user = req.user;
 
   if (user.stamina < 15) {
-    res.render('index', {layout: 'default', error: "You don't have enough stamina! Start exercising!", user: req.user});
+    Fight.find({user: user._id}).sort({_id: -1}).limit(6).exec((err, fights) => {
+      if (err) {
+        console.log(err);
+        res.redirect('/logout');
+      } else {
+        console.log(fights);
+        res.render('index', { layout: 'default', error: "You don't have enough stamina! Start exercising!", user: req.user, fights: fights });
+      }
+    });
   } else {
     var pigs = ["Scout", "Archer", "Knight", "Warmonger"];
     var pig_power = [80, 105, 125, 160];
