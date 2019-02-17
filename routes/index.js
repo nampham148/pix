@@ -6,7 +6,6 @@ var router = express.Router();
 const axios = require('axios');
 const {Storage} = require('@google-cloud/storage');
 const vision = require('@google-cloud/vision');
-var helpers = require("utils");
 
 var isAuthenticated = function (req, res, next) {
   if (req.isAuthenticated())
