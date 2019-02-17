@@ -1,6 +1,6 @@
 <div class="vertical-center">
 
-	<div class="row align-items-center">
+	<div class="row align-items-center text-center">
 		<div class="col align-seft-center">
 			{{#if error}}
 				<div class="alert alert-warning alert-dismissible fade show" role="alert">
@@ -12,7 +12,7 @@
 			{{/if}}
 		</div>
 	</div>
-	<div class="row align-items-center">
+	<div class="row align-items-center text-center">
 		<div class="offset-4 col-4 align-seft-center">
 			<form class="form-signin" action="/register" method="post">
 			  <img class="mb-4" src="assets/images/pig.jpg" alt="" width="72" height="72"/>
@@ -24,6 +24,8 @@
 				<input type="username" name="username" class="form-control" id="username" placeholder="Enter username" required="" autofocus="">
 				<label class="sr-only" for="password">Password</label>
 				<input type="password" name="password" class="form-control" id="password" placeholder="Password" required="">
+				<label class="sr-only" for="confpassword">Confirm Password</label>
+				<input type="password" name="confpassword" class="form-control" id="confpassword" placeholder="Confirm Password" required="">
 			  </div>
 			  <button type="submit" class="btn btn-primary">Register</button>
 			  <a href="/" class="btn btn-primary">Cancel</a>
