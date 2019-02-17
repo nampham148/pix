@@ -12,8 +12,14 @@ var LocalStrategy = require('passport-local').Strategy;
 var expressSession = require('express-session');
 
 var indexRouter = require('./routes/index');
+var bodyParser = require('body-parser');
+
+var usersRouter = require('./routes/users');
+var fileUpload = require('express-fileupload');
+require('dotenv').config()
 
 var app = express();
+
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -22,12 +28,14 @@ app.set('view engine', 'hbs');
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+
 app.use(cookieParser());
 app.use(expressSession({secret: 'mySecretKey'}));
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(fileUpload());
 
 
 
@@ -49,7 +57,7 @@ app.use(function(req, res, next) {
   next(createError(404));
 });
 
-app.engine( 'hbs', hbs( {
+app.engine('hbs', hbs( {
   extname: 'hbs',
   defaultView: 'default',
   layoutsDir: __dirname + '/views/layouts/',
