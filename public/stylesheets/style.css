@@ -8,8 +8,10 @@ a {
   color: #00B7FF;
 }
 
-.container{
-    display: flex;
-    justify-content: center;
-    align-items: center;
+.vertical-center {
+	width: 1000px;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
 }
