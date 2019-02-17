@@ -13,3 +13,41 @@ a {
     justify-content: center;
     align-items: center;
 }
+
+.box {
+	margin: 10px 0;
+	border:2px solid #333;
+	padding: 25px;
+	text-align:center;
+}
+
+.box2 {
+	margin: 10px 0;
+	border:2px solid #333;
+	padding: 25px;
+	text-align:left;
+}
+
+.box3 {
+	margin: 10px 0;
+	border:2px solid #333;
+	padding: 25px;
+	text-align:center;
+}
+
+.rect{  
+  margin:0 0 20px;
+  padding-top: 10px;
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-bottom: 10px;
+  border:2px solid #333;
+  width: 80%;
+  background-color: rgb(173, 132, 3);
+  transform: translate(110px);
+}
+
+.gold {background-color: rgb(255,223,0);}
+.darkyellow {background-color: rgb(244, 222, 151);} 
+.yellow {background-color: #fafad2;}
+.red {color: red;}
