@@ -214,14 +214,19 @@ router.post('/fight', isAuthenticated, function(req, res, next) {
 
     user.gold += gold_drop;
     user.stamina -= 15;
-    user.save()
+    user.save((err) => {
+      if (err) {
+        console.log(err);
+      }
+
+      res.redirect("/");
+    });
 
     console.log(opponent_name);
     console.log(user_power);
     console.log(result_win);
     console.log(gold_drop);
 
-    res.redirect("/");
   }
 });
 
