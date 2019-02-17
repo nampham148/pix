@@ -13,8 +13,6 @@ var expressSession = require('express-session');
 
 var indexRouter = require('./routes/index');
 var bodyParser = require('body-parser');
-
-var usersRouter = require('./routes/users');
 var fileUpload = require('express-fileupload');
 require('dotenv').config()
 
