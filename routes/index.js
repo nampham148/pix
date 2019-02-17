@@ -6,6 +6,22 @@ var router = express.Router();
 const axios = require('axios');
 const {Storage} = require('@google-cloud/storage');
 const vision = require('@google-cloud/vision');
+var schedule = require('node-schedule');
+
+// REGEN MANA
+var j = schedule.scheduleJob('0,30 * * * * *', function() {
+  console.log("running cron job");
+  Account.find({} , (err, users) => {
+    if (err) {
+      console.log(err);
+    }
+
+    users.map(user => {
+      user.stamina = Math.min(150, user.stamina + user.stamina_regen);
+      user.save();
+    });
+  });
+});
 
 var isAuthenticated = function (req, res, next) {
   if (req.isAuthenticated())
@@ -17,13 +33,44 @@ router.get('/shop', isAuthenticated, function(req, res, next) {
 	res.render('shop', { layout: 'default', user: req.user });
 });
 
+router.post('/shop', isAuthenticated, function(req, res, next) {
+  console.log(req.body);
+  var prices = {
+    mana: 4,
+    sword: 7,
+    ultimate: 15 
+  }
+  var item = req.body.item;
+  var quantity = parseInt(req.body.quantity);
+  let cost = quantity * prices[item];
+  var user = req.user;
+
+  if (user.gold < cost) {
+    res.render('shop', {layout: 'default', user: req.user, error: "You don't have enough gold!"});
+    return;
+  } else {
+    if (item == "mana") {
+      user.stamina = Math.min(150, user.stamina + 30);
+    } else if (item == "sword") {
+      user.bonus_power += 10;
+    } else if (item == "ultimate") {
+      user.empowered = true;
+    }
+
+    user.gold -= cost;
+    user.save();
+
+    res.redirect('/shop');
+  }
+});
+
 // AUTHENTICATION
 router.get('/', isAuthenticated, function(req, res, next) {
   res.render('index', { layout: 'default', user: req.user });
 });
 
 router.get('/login', function(req, res, next) {
-  res.render('login', { layout: 'default', title: 'Login'});
+  res.render('login', { layout: 'default', title: 'Pix v1.0'});
 });
 
 router.post('/login', passport.authenticate('local', {successRedirect: '/', failureRedirect: '/login', failureFlash: 'Invalid username or password'}));
@@ -34,6 +81,9 @@ router.get('/register', function(req, res, next) {
 
 router.post('/register', function(req, res, next) {
     Account.register(new Account({ username : req.body.username }), req.body.password, function(err, account) {
+		if (req.body.password != req.body.confpassword) {
+		  return res.render('register', { layout: 'default', error: 'Password and confirm password does not match!'});
+		}
         if (err) {
           return res.render('register', { layout: 'default', error : err.message });
         }

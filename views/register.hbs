@@ -1,26 +1,35 @@
-<div class="container text-center authenticate-form">
-  <form class="form-signin" action="/register" method="post">
-    {{#if error}}
-  	<div class="alert alert-warning alert-dismissible fade show" role="alert">
-  	{{{error}}}
-  	<button type="button" class="close" data-dismiss="alert" aria-label="Close">
-      <span aria-hidden="true">&times;</span>
-  	</button>
-  	</div>
-  	{{/if}}
-    <img class="mb-4" src="assets/images/pig.jpg" alt="" width="72" height="72"/>
-    <div class="form-group">
-      <h1 class="h3 mb-3 font-weight-normal">Register</h1>
-    </div>
-    <div class="form-group">
-      <label class="sr-only" for="username">Username</label>
-      <input type="username" name="username" class="form-control" id="username" placeholder="Enter username" required="" autofocus="">
-      <label class="sr-only" for="password">Password</label>
-      <input type="password" name="password" class="form-control" id="password" placeholder="Password" required="">
-    </div>
-    <button type="submit" class="btn btn-primary">Register</button>
-    <a href="/" class="btn btn-primary">Cancel</a>
-  </form>
+<div class="vertical-center">
+	<div class="row align-items-center text-center">
+		<div class="col align-seft-center">
+			{{#if error}}
+				<div class="alert alert-warning alert-dismissible fade show" role="alert">
+				{{{error}}}
+				<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+				<span aria-hidden="true">&times;</span>
+				</button>
+				</div>
+			{{/if}}
+		</div>
+	</div>
+	<div class="row align-items-center text-center">
+		<div class="offset-4 col-4 align-seft-center">
+			<form class="form-signin" action="/register" method="post">
+			  <img class="mb-4" src="assets/images/pig.jpg" alt="" width="72" height="72"/>
+			  <div class="form-group">
+				<h1 class="h3 mb-3 font-weight-normal">Register</h1>
+			  </div>
+			  <div class="form-group">
+				<label class="sr-only" for="username">Username</label>
+				<input type="username" name="username" class="form-control" id="username" placeholder="Enter username" required="" autofocus="">
+				<label class="sr-only" for="password">Password</label>
+				<input type="password" name="password" class="form-control" id="password" placeholder="Password" required="">
+				<label class="sr-only" for="confpassword">Confirm Password</label>
+				<input type="password" name="confpassword" class="form-control" id="confpassword" placeholder="Confirm Password" required="">
+			  </div>
+			  <button type="submit" class="btn btn-primary">Register</button>
+			  <a href="/" class="btn btn-primary">Cancel</a>
+			</form>
+		</div>
+	</div>
 </div>
-
 
