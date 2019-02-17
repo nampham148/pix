@@ -13,6 +13,10 @@ var isAuthenticated = function (req, res, next) {
   res.redirect('/login');
 }
 
+router.get('/shop', isAuthenticated, function(req, res, next) {
+	res.render('shop', { layout: 'default', user: req.user });
+});
+
 // AUTHENTICATION
 router.get('/', isAuthenticated, function(req, res, next) {
   res.render('index', { layout: 'default', user: req.user });
