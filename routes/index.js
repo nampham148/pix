@@ -23,6 +23,34 @@ var j = schedule.scheduleJob('0,30 * * * * *', function() {
   });
 });
 
+// RESTART PROGRESS
+var mana_j = schedule.scheduleJob('0 1 * * *', function(){
+  Account.find({} , (err, users) => {
+    if (err) {
+      console.log(err);
+    }
+
+    users.map(user => {
+      user.stamina_regen = 5;
+      user.save();
+    });
+  });
+});
+
+// RESTART POWER
+var power_j = schedule.scheduleJob('0 1 1 5,12 *', function() {
+  Account.find({} , (err, users) => {
+    if (err) {
+      console.log(err);
+    }
+
+    users.map(user => {
+      user.inherent_power = 100;
+      user.save();
+    });
+  });
+});
+
 var isAuthenticated = function (req, res, next) {
   if (req.isAuthenticated())
     return next();
