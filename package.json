@@ -6,13 +6,24 @@
     "start": "nodemon ./bin/www"
   },
   "dependencies": {
+    "body-parser": "^1.18.3",
+    "chai": "^4.2.0",
+    "connect": "^3.6.6",
     "cookie-parser": "~1.4.3",
     "debug": "~2.6.9",
     "express": "~4.16.0",
     "express-handlebars": "^3.0.0",
+    "express-session": "^1.15.6",
+    "flash": "^1.1.0",
     "handlebars": "^4.1.0",
     "http-errors": "~1.6.2",
-    "morgan": "~1.9.0"
+    "mocha": "^5.2.0",
+    "mongoose": "^4.4.1",
+    "morgan": "~1.9.0",
+    "passport": "^0.2.2",
+    "passport-local": "^1.0.0",
+    "passport-local-mongoose": "^1.0.0",
+    "should": "^13.2.3"
   },
   "devDependencies": {
     "nodemon": "^1.18.10"
