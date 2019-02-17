@@ -8,8 +8,35 @@ a {
   color: #00B7FF;
 }
 
+.vertical-center {
+	width: 1000px;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+}
+
+.column-color {
+	background-color: grey;
+	padding-top: 10px;
+	padding-right: 10px;
+	padding-bottom: 10px;
+	padding-left: 10px;
+}
+
+
+
 .authenticate-form{
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.p{
+	font-size: 15px;
+}
+.container1 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
