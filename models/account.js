@@ -5,7 +5,7 @@ var passportLocalMongoose = require('passport-local-mongoose');
 var Account = new Schema({
     username: {type: String, required: true},
     password: String,
-    inherent_power: {type: Number, default: 100},
+    inherent_power: {type: Number, default: 80},
     bonus_power: {type: Number, default: 0},
     stamina: {type: Number, default: 150},
     stamina_regen: {type: Number, default: 5},

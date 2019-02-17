@@ -9,7 +9,7 @@ const vision = require('@google-cloud/vision');
 var schedule = require('node-schedule');
 
 // REGEN MANA
-/*var j = schedule.scheduleJob('0,30 * * * * *', function() {
+var j = schedule.scheduleJob('0,30 * * * * *', function() {
   console.log("running cron job");
   Account.find({} , (err, users) => {
     if (err) {
@@ -49,7 +49,7 @@ var power_j = schedule.scheduleJob('0 1 1 5,12 *', function() {
       user.save();
     });
   });
-});*/
+});
 
 var isAuthenticated = function (req, res, next) {
   if (req.isAuthenticated())
@@ -64,9 +64,9 @@ router.get('/shop', isAuthenticated, function(req, res, next) {
 router.post('/shop', isAuthenticated, function(req, res, next) {
   console.log(req.body);
   var prices = {
-    mana: 4,
-    sword: 7,
-    ultimate: 15 
+    mana: 8,
+    sword: 10,
+    ultimate: 20 
   }
   var item = req.body.item;
   var quantity = parseInt(req.body.quantity);
@@ -88,7 +88,7 @@ router.post('/shop', isAuthenticated, function(req, res, next) {
     user.gold -= cost;
     user.save();
 
-    res.redirect('/shop');
+    res.render('shop', {layout: 'default', user: req.user, error: "Thanks for shopping!"});;
   }
 });
 
@@ -162,7 +162,7 @@ router.post('/fight', isAuthenticated, function(req, res, next) {
     var pigs = ["Scout", "Archer", "Knight", "Warmonger"];
     var pig_power = [80, 105, 125, 160];
     var probs = [0.3, 0.3, 0.3, 0.1];
-    var gold_drops = [0, 2, 4, 6];
+    var gold_drops = [3, 6, 9, 12];
 
     // 30% chance to meet the big boss
     var random = Math.random();
@@ -198,7 +198,7 @@ router.post('/fight', isAuthenticated, function(req, res, next) {
 
     if (result_win) {
       // random a gold drop
-      gold_drop = Math.floor(Math.random() * 4) + min_drop;
+      gold_drop = Math.floor(Math.random() * min_drop);
     }
 
     var fight = new Fight({
@@ -226,11 +226,11 @@ router.post('/fight', isAuthenticated, function(req, res, next) {
 });
 
 // READ IMAGE
-router.get('/gpa-image', function(req, res, next) {
+router.get('/gpa-image', isAuthenticated, function(req, res, next) {
   res.render('gpa_image', {layout: 'default'});
 });
 
-router.post('/gpa-image', function(req, res, next) {
+router.post('/gpa-image', isAuthenticated, function(req, res, next) {
   console.log("reach post");
   console.log(req.files);
   var fileBuffer = req.files.file.data;
@@ -272,7 +272,18 @@ router.post('/gpa-image', function(req, res, next) {
           console.log(texts);
           for (i in texts) {
             if (texts[i].startsWith("Semester GPI")){
+              var GPA = texts[i].split(":")[1].replace(/\s/g, '')
               console.log(texts[i].split(":")[1].replace(/\s/g, ''));
+              var user = req.user;
+              var new_power = 80 + Math.floor(15 * GPA)
+              user.inherent_power = new_power;
+              user.save((err) => {
+                if (err) {
+                  console.log(err);
+                }
+
+                res.render('gpa_image', {layout: 'default', error: `You have a GPA of ${GPA}, your power is now ${new_power}!`});
+              });
               break;
             }
           }
@@ -283,10 +294,9 @@ router.post('/gpa-image', function(req, res, next) {
 
     });
 
-  res.redirect("/");
 })
 
-router.post('/health', function(req, res, next) {
+router.post('/health', isAuthenticated, function(req, res, next) {
   console.log("reach health");
   console.log(req.files);
   var fileBuffer = req.files.file.data;
@@ -328,7 +338,19 @@ router.post('/health', function(req, res, next) {
           console.log(texts);
           for (i in texts) {
             if (texts[i].endsWith("steps")){
-              console.log(texts[i].split(" ")[0]);
+              var steps = texts[i].split(" ")[0];
+              console.log(steps);
+              var new_regen = 5 + Math.floor(steps/500);
+              var user = req.user;
+              user.stamina_regen = new_regen;
+              user.save(err => {
+                if (err) {
+                  console.log(err);
+                }
+                res.render('gpa_image', {layout: 'default', error: `You have walked ${steps} steps today, great! Your stamina regen rate is now ${new_regen}`});
+              });
+
+
               break;
             }
           }
@@ -338,8 +360,6 @@ router.post('/health', function(req, res, next) {
         });
 
     });
-
-  res.redirect("/");
 });
 
 /*router.get('/health', function(req, res, next) {

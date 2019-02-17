@@ -61,7 +61,7 @@ a {
   padding-right: 20px;
   padding-bottom: 10px;
   border:2px solid #333;
-  width: 80%;
+  width: 130%;
   background-color: rgb(173, 132, 3);
   transform: translate(110px);
 }
@@ -134,4 +134,8 @@ a {
 
 .journal-entry {
   height: 100%;
+}
+
+.number-input {
+  width: 100px;
 }

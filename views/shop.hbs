@@ -1,41 +1,69 @@
 <div class="container">
 	<div class="rect" brown>
 		<div class="row">
-			<div class="col-4 box2 gold">GOLD:</div>
+			<div class="col-4 box2 gold">GOLD: {{user.gold}}</div>
 			<div class="col-8 box3 darkyellow">WELCOME TO OUR SHOP!</div>
 		</div>
 		<div class="row">
-			<div class="col-3 box yellow">Mana Potion</div>
-			<div class="col-9 box yellow">
+			<div class="col-4 box yellow">
+        <img src="assets/images/mana.png" alt="" width="50" length="50" />
+        Mana   
+      </div>
+			<div class="col-8 box yellow">
 				<div class="row">
 					<div class="col-3">+30 Mana</div>
 					<div class="col-3"></div>
-					<div class="col-3">$8</div>
-					<div class="col-3"><button type="button" class="btn btn-danger">Buy</button></div>
+					<div class="col-2">$8</div>
+					<div class="col-4">
+            <form action="/shop" method="post">
+              <input type="hidden" name="item" value="mana">
+              <input type="number" name="quantity" min="0" class="number-input">
+              <input type="submit" value="submit" class="btn btn-danger">
+            </form>     
+          </div>
 				</div>
 			</div>
 		</div>
 		<div class="row">
-			<div class="col-3 box yellow">Long Sword</div>
-			<div class="col-9 box yellow">
+			<div class="col-4 box yellow">
+        <img src="assets/images/long_sword.png" alt="" width="50" length="50" />
+        Long Sword
+      </div>
+			<div class="col-8 box yellow">
 				<div class="row">
 					<div class="col-3">+10 Attack</div>
 					<div class="col-3"></div>
-					<div class="col-3">$10</div>
-					<div class="col-3"><button type="button" class="btn btn-danger">Buy</button></div>
+					<div class="col-2">$10</div>
+					<div class="col-4">
+            <form action="/shop" method="post">
+              <input type="hidden" name="item" value="sword">
+              <input type="number" name="quantity" min="0" class="number-input">
+              <input type="submit" value="submit" class="btn btn-danger">
+            </form>
+          </div>
 				</div>
 			</div>
 		</div>
 		<div class="row">
-			<div class="col-3 box yellow">Sword of the Ancient King</div>
-			<div class="col-9 box yellow">
+			<div class="col-4 box yellow">
+        <img src="assets/images/50431429_769303080099977_7613375624366784512_n.png" alt="" width="50" length="50" />
+        Sword of the Ancient King
+      </div>
+			<div class="col-8 box yellow">
 				<div class="row">
 					<div class="col-6">Grants you the power to fight the warmonger</div>
-					<div class="col-3">$20</div>
-					<div class="col-3"><button type="button" class="btn btn-danger">Buy</button></div>
+					<div class="col-2">$20</div>
+					<div class="col-4">
+            <form action="/shop" method="post">
+              <input type="hidden" name="item" value="ultimate">
+              <input type="number" name="quantity" max="1" min="0" class="number-input">
+              <input type="submit" value="submit" class="btn btn-danger">
+            </form>
+          </div>
 				</div>
 			</div>
 		</div>
+    <a href="/"> <button class="btn btn-primary"> Home </button> </a>
 	</div>
 <!-- 
 <h1> this is shop page </h1>
